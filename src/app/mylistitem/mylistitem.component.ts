@@ -51,4 +51,10 @@ export class MylistitemComponent implements OnInit {
   addnewitem() {
     this.router.navigate(["/additem"]);
   }
+
+  getitemdetails(element){
+    this.router.navigate(["/additem"], {
+      queryParams: {type:"details",itemdetails:JSON.stringify(element)}
+    });
+  }
 }

@@ -1,33 +1,60 @@
 <div class="main-div">
     <mat-card>
-        <mat-card-title class="title-class">ADD ITEM</mat-card-title>
+        <mat-card-title class="title-class">{{type == "details" ? 'ITEM DEATILS' : 'ADD ITEM'}}</mat-card-title>
         <mat-card-content>
-            <div class="content-div">
+            <div class="content-div" *ngIf="type != 'details'">
                 <div>
                     <mat-form-field>
                         <input matInput placeholder="Name" [(ngModel)]="name">
                       </mat-form-field>
                 </div>
-            
                 <div>
                     <mat-form-field>
                         <input matInput [(ngModel)]="price" placeholder="Price" >
                       </mat-form-field>
                 </div>
-            
                 <div>
-                    <input type="text" placeholder="Image Upload" value="{{filename}}" disabled />
-                    <input  (change)="fileEvent($event)" id="input-file-id" type="file"/>
-                    <!-- <label for="input-file-id" class="browsebutton btn-browse">Browse</label> -->
+                    <div>
+                        <input type="text" placeholder="Image Upload" value="{{filename}}" disabled />
+                        <input  (change)="fileEvent($event)" id="input-file-id" type="file"/>
+                        <!-- <label for="input-file-id" class="browsebutton btn-browse">Browse</label> -->
+                    </div>
                 </div>
-            
                 <div>
-                    <mat-form-field>
+                    <mat-form-field >
                         <input matInput placeholder="Description" [(ngModel)]="description">
                       </mat-form-field>
+                     
                 </div>
                 <div>
                     <button mat-raised-button class="btn-submit" (click)="submititem()">SUBMIT</button>
+                    
+                </div>
+            </div>
+
+            <div class="content-div" *ngIf="type == 'details'">
+                <div fxLayout="row" >
+                    <div fxFlex="20"><b>Name:</b></div>
+                    <div>{{name}}</div>
+                </div>
+                <div fxLayout="row">
+                    <div fxFlex="20"><b>Price:</b></div>
+                    <div>{{price | currency}}</div>
+                </div>
+
+                <div fxLayout="row">
+                    <div fxFlex="20"><b>Image:</b></div>
+                    <div>{{filename}}</div>
+                </div>
+
+                <div fxLayout="row">
+                    <div fxFlex="20"><b>Description:</b></div>
+                    <div>{{description}}</div>
+                </div>
+
+                <div>
+                    <button mat-raised-button class="btn-submit" (click)="submititem()">BACK</button>
+                    
                 </div>
             </div>
            
