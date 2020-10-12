@@ -14,21 +14,24 @@ export class AdditemComponent implements OnInit {
   filename;
   description: string;
   type: string;
-  itemdetails: IListitem;
+  id;
 
   constructor(private router: Router, private route: ActivatedRoute,) { }
 
   ngOnInit() {
+
     this.route.queryParams.subscribe(params => {
       this.type = params["type"];
-      this.itemdetails = JSON.parse(params["itemdetails"]);
+      this.id = params["id"];
     });
 
     if (this.type == "details") {
-      this.name = this.itemdetails.name;
-      this.price = this.itemdetails.price;
-      this.description = this.itemdetails.description,
-        this.filename = this.itemdetails.image;
+      let itemdetails = JSON.parse(localStorage.getItem("Item"));
+      itemdetails = itemdetails != null && itemdetails.length ? itemdetails.find(a => a.id == this.id) : null;
+      this.name = itemdetails.name;
+      this.price = itemdetails.price;
+      this.description = itemdetails.description,
+        this.filename = itemdetails.image;
     }
   }
 
@@ -48,7 +51,13 @@ export class AdditemComponent implements OnInit {
     }
     else {
       this.filename = JSON.parse(localStorage["file"]);
+      let itemid = JSON.parse(localStorage.getItem("Item"));
+      let id = 0;
+      if (itemid != null && itemid.length) {
+        id = itemid[itemid.length - 1].id + 1;
+      }
       this.additem.push({
+        id: id,
         name: this.name,
         price: this.price,
         description: this.description,

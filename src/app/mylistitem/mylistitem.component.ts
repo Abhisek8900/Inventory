@@ -19,12 +19,11 @@ export class MylistitemComponent implements OnInit {
     this.getlistdata();
   }
 
-  deleterowitem(index) {
-    if (index !== -1) {
-      this.listdata.splice(index, 1);
-      localStorage.setItem("Item", JSON.stringify(this.listdata));//after deleteing a specific row from datasource we are updating local storage  also
-      this.table.renderRows();
-    }
+  deleterowitem(element) {
+    let itemid=element.id;
+    this.listdata=this.listdata.filter(a=>a.id!==itemid);
+    localStorage.setItem("Item", JSON.stringify(this.listdata));//after deleteing a specific row from datasource we are updating local storage  also
+    this.getlistdata();
   }
 
   getlistdata() {
@@ -54,7 +53,7 @@ export class MylistitemComponent implements OnInit {
 
   getitemdetails(element){
     this.router.navigate(["/additem"], {
-      queryParams: {type:"details",itemdetails:JSON.stringify(element)}
+      queryParams: {type:"details",id:element.id}
     });
   }
 }
