@@ -13,19 +13,22 @@ export class MylistitemComponent implements OnInit {
   displayedColumns = ['name', 'price', 'image', 'description', 'actions'];
   listdata: IListitem[] = [];
   itemdata: IListitem[] = [];
-  constructor(private router: Router,private domSanitizer: DomSanitizer) { }
+  constructor(private router: Router, private domSanitizer: DomSanitizer) { }
   @ViewChild(MatTable) table: MatTable<any>;
   ngOnInit() {
     this.getlistdata();
   }
 
-  deleterowitem(element) {
-    let itemid=element.id;
-    this.listdata=this.listdata.filter(a=>a.id!==itemid);
-    localStorage.setItem("Item", JSON.stringify(this.listdata));//after deleteing a specific row from datasource we are updating local storage  also
-    this.getlistdata();
+  deleterowitem(index) {
+    if (index !== -1) {
+      this.listdata.splice(index, 1);
+      this.table.renderRows();
+    }
   }
 
+  /*Actually for this project i have not used the service because i have not created any api from backend because my 
+  focus was on front end part i.e why i didnt create any service file for this app so i have used locastorage for 
+  retrieving data to the mat-table  instead of using service.ts */
   getlistdata() {
     if (localStorage.getItem("Item")) {
       this.itemdata = JSON.parse(localStorage.getItem("Item"));
@@ -37,23 +40,23 @@ export class MylistitemComponent implements OnInit {
     }
   }
 
-  getphoto(element){
-   var base64 = localStorage["file"];
-   var base64Parts = base64.split(",");
-   var fileFormat = base64Parts[0].split(";")[1];
-   var filename=base64Parts[0].split(";")[0];
-   var fileContent = base64Parts[1];
-   var file = new File([fileContent], filename, {type: fileFormat});
-   element.image=this.domSanitizer.bypassSecurityTrustUrl(filename);
-   return element.image;
+  getphoto(element) {
+    var base64 = JSON.parse(localStorage["file"]);
+    var base64Parts = base64.split(",");
+    var fileFormat = base64Parts[0].split(";")[1];
+    var filename = base64Parts[0].split(";")[0];
+    var fileContent = base64Parts[1];
+    var file = new File([fileContent], filename, { type: fileFormat });
+    element.image = this.domSanitizer.bypassSecurityTrustUrl(filename);
+    return element.image;
   }
   addnewitem() {
     this.router.navigate(["/additem"]);
   }
 
-  getitemdetails(element){
+  getitemdetails(element) {
     this.router.navigate(["/additem"], {
-      queryParams: {type:"details",id:element.id}
+      queryParams: { type: "details", id: element.id }
     });
   }
 }
