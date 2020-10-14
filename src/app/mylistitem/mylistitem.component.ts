@@ -22,6 +22,7 @@ export class MylistitemComponent implements OnInit {
   deleterowitem(index) {
     if (index !== -1) {
       this.listdata.splice(index, 1);
+      localStorage.setItem("Item", JSON.stringify(this.listdata));
       this.table.renderRows();
     }
   }
